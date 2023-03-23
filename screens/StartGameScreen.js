@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { StyleSheet, TextInput, View, Alert } from "react-native";
 import PrimaryButton from "../components/guess_number/PrimaryButton";
-const StartGameScreen = () => {
+import colors from "../constants/colors";
+const StartGameScreen = ({ onPickedNumber }) => {
   const [enteredValue, setEnteredValue] = useState("");
   const confirmInputHandler = () => {
     const choosenNumber = Number(enteredValue);
@@ -15,7 +16,9 @@ const StartGameScreen = () => {
           },
         },
       ]);
+      return;
     }
+    onPickedNumber(choosenNumber);
   };
   return (
     <View style={styles.inputContainer}>
@@ -53,7 +56,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     padding: 16,
     marginTop: 100,
-    backgroundColor: "#3b021f",
+    backgroundColor: colors.primary800,
     elevation: 8,
     shadowColor: "black",
     shadowOffset: {
@@ -67,9 +70,9 @@ const styles = StyleSheet.create({
     height: 50,
     width: 50,
     fontSize: 32,
-    borderBottomColor: "#ddb52f",
+    borderBottomColor: colors.accent500,
     borderBottomWidth: 2,
-    color: "#ddb52f",
+    color: colors.accent500,
     marginVertical: 8,
     fontWeight: "bold",
     textAlign: "center",
