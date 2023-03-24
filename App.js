@@ -5,15 +5,48 @@ import { StatusBar } from "expo-status-bar";
 import { useState } from "react";
 import GameScreen from "./screens/GameScreen";
 import colors from "./constants/colors";
+import GameOverScreen from "./screens/GameOverScreen";
+import { useFonts } from "expo-font";
+import AppLoading from "expo-app-loading";
+
 export default function App() {
   const [userNumber, setUserNumber] = useState();
+  const [gameIsOver, setGameIsOver] = useState(false);
+  const [guessRound, setGuessRound] = useState(0);
+  // useFonts({
+  //   "open-sans": require("./assets/fonts/abcxyz.ttf"),
+  // });
+
   const pickedNumberHandler = (pickedNumber) => {
     setUserNumber(pickedNumber);
   };
+  function startNewGameHandler() {
+    setUserNumber(null);
+    setGuessRound(0);
+    setGameIsOver(false);
+  }
+  function increaseGuessRound() {
+    setGuessRound((prev) => prev + 1);
+  }
   let screen = <StartGameScreen onPickedNumber={pickedNumberHandler} />;
 
   if (userNumber) {
-    screen = <GameScreen pickedNumber={userNumber} />;
+    screen = (
+      <GameScreen
+        increaseGuessRound={increaseGuessRound}
+        setGameIsOver={setGameIsOver}
+        pickedNumber={userNumber}
+      />
+    );
+  }
+  if (gameIsOver && userNumber) {
+    screen = (
+      <GameOverScreen
+        pickedNumber={userNumber}
+        roundNumber={guessRound}
+        onStartNewGame={startNewGameHandler}
+      />
+    );
   }
 
   return (
